@@ -7,31 +7,24 @@ using System.Threading.Tasks;
 namespace AesProject
 {
     public static class Aes
-    {
+	{
 
-        private String[,] Sbox = { { "a", "b" }, { "c", "d" } };
-        
-        private String[,] EncryptMatrix;
-        
-        private String[,] DecryptMatrix;
-
-
-        public static Block SubBytes(Block block)
+        private static Block SubBytes(Block block)
         {
             throw new NotImplementedException();
         }
 
-        public static Block ShiftRows(Block block)
+        private static Block ShiftRows(Block block)
         {
             throw new NotImplementedException();
         }
 
-        public static Block MixColumns(Block block)
+        private static Block MixColumns(Block block)
         {
             throw new NotImplementedException();
         }
 
-        public static Block AddRoundKey(Block block)
+        private static Block AddRoundKey(Block block)
         {
             throw new NotImplementedException();
         }
