@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AesProject
 {
-    class Block
+    public class Block
     {
         private byte[,] _data;
 
@@ -26,6 +26,11 @@ namespace AesProject
 			Buffer.BlockCopy(data, 0, _data, 0, 16);
 		}
 
+		public byte this[int x, int y]
+		{
+			get { return _data[x, y]; }
+			set { _data[x, y] = value; }
+		}
 
     }
 }
