@@ -50,6 +50,24 @@ namespace AesProject
 									};
 		#endregion
 
+		#region MixColumns tables
+
+		public static int[,] MixColumns_enc = {
+									{ 2, 3, 1, 1},
+									{ 1, 2, 3, 1},
+									{ 1, 1, 2, 3},
+									{ 3, 1, 1, 2}
+								};
+
+		public static int[,] MixColumns_dec = {
+									{ 14, 11, 13, 9},
+									{ 9, 14, 11, 13},
+									{ 13, 9, 14, 11},
+									{ 11, 13, 9, 14}
+								};
+
+		#endregion
+
 		#region RF_M2 Table
 		public static byte[] RF_M2 =
             {
