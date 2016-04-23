@@ -8,6 +8,31 @@ namespace AesProject
 {
     public static class Aes
 	{
+		public static Block StartAes1(Block message, Block key)
+		{
+			Block retMessage = SubBytes(message);
+			retMessage = ShiftRows(retMessage);
+			retMessage = MixColumns(retMessage, true);
+			retMessage = AddRoundKey(retMessage, key);
+
+			return retMessage;
+		}
+
+		public static Block DecryptAes1(Block message, Block cypher)
+		{
+			return AddRoundKey(MixColumns(ShiftRows(SubBytes(message)), true), cypher);
+		}
+
+		public static Block StartAes3(Block message, Block key1, Block key2, Block key3)
+		{
+			Block tempMsg = new Block();
+
+			tempMsg = AddRoundKey(MixColumns(ShiftRows(SubBytes(message)), true), key1);
+			tempMsg = AddRoundKey(MixColumns(ShiftRows(SubBytes(message)), true), key2);
+			tempMsg = AddRoundKey(MixColumns(ShiftRows(SubBytes(message)), true), key3);
+			
+			return tempMsg;
+		}
 
         public static Block SubBytes(Block block)
         {

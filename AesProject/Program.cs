@@ -77,6 +77,9 @@ namespace AesProject
 			Block newBlock4 = Aes.AddRoundKey(block4, key);
 			bool res4 = (block5 == newBlock4);
 			
+			//checking DecryptAes1
+			Block checking = Aes.DecryptAes1(block, block5);
+			bool resss = (key == checking);
 
 			System.Console.Write("");
         }
