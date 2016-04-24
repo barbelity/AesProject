@@ -61,6 +61,9 @@ namespace AesProject
 												(byte)0x17, (byte)0xb1, (byte)0x39, (byte)0x05});
 			#endregion
 
+
+			#region check encrypt
+
 			//checking subBytes
 			Block newBlock = Aes.SubBytes(block);
 			bool res = (newBlock == block2);
@@ -76,9 +79,31 @@ namespace AesProject
 			//checking addRoundKey
 			Block newBlock4 = Aes.AddRoundKey(block4, key);
 			bool res4 = (block5 == newBlock4);
-			
-			//checking DecryptAes1
-			Block checking = Aes.DecryptAes1(block, block5);
+
+			#endregion
+
+			#region check decrypt
+
+			//checking inverseSubBytes
+			Block newBlock6 = Aes.inverseSubBytes(block2);
+			bool res6 = (newBlock6 == block);
+
+			//checking inverseShiftRows
+			Block newBlock5 = Aes.InverseShiftRows(block3);
+			bool res5 = (newBlock5 == block2);
+
+			//checking inverseMixColumns
+			Block newBlock7 = Aes.MixColumns(block4, false);
+			bool res7 = (block3 == newBlock7);
+
+			//checking final AddRoundKey
+			Block newBlock8 = Aes.AddRoundKey(block5, key);
+			bool res8 = (block4 == newBlock8);
+
+			#endregion
+
+			//checking
+			Block checking = Aes.EncryptAes1(block, block5);
 			bool resss = (key == checking);
 
 			System.Console.Write("");

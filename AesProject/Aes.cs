@@ -8,22 +8,29 @@ namespace AesProject
 {
     public static class Aes
 	{
-		public static Block StartAes1(Block message, Block key)
+		public static Block EncryptAes1(Block message, Block key)
 		{
-			Block retMessage = SubBytes(message);
-			retMessage = ShiftRows(retMessage);
-			retMessage = MixColumns(retMessage, true);
-			retMessage = AddRoundKey(retMessage, key);
+			Block encMessage = SubBytes(message);
+			encMessage = ShiftRows(encMessage);
+			encMessage = MixColumns(encMessage, true);
+			encMessage = AddRoundKey(encMessage, key);
 
-			return retMessage;
+			return encMessage;
 		}
 
-		public static Block DecryptAes1(Block message, Block cypher)
+		public static Block DecryptAes1(Block encMessage, Block key)
+		{
+			Block message = new Block();
+			
+			return message;
+		}
+
+		public static Block BreakAes1(Block message, Block cypher)
 		{
 			return AddRoundKey(MixColumns(ShiftRows(SubBytes(message)), true), cypher);
 		}
 
-		public static Block StartAes3(Block message, Block key1, Block key2, Block key3)
+		public static Block EncryptAes3(Block message, Block key1, Block key2, Block key3)
 		{
 			Block tempMsg = new Block();
 
@@ -36,7 +43,6 @@ namespace AesProject
 
         public static Block SubBytes(Block block)
         {
-			//Block retBlock = new Block();
 			byte[] subMessageArray = new byte[16];
 
 			for (int i = 0; i < 4; i++)
@@ -50,6 +56,22 @@ namespace AesProject
 
 			return new Block(subMessageArray);
         }
+
+		public static Block inverseSubBytes(Block block)
+		{
+			byte[] subMessageArray = new byte[16];
+
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					byte by = block[i, j];
+					subMessageArray[i * 4 + j] = Tables.InverseSbox[by >> 4, by % 16];
+				}
+			}
+
+			return new Block(subMessageArray);
+		}
 
         public static Block ShiftRows(Block block)
         {
@@ -75,9 +97,26 @@ namespace AesProject
 			arrayAfterShift[14] = block[3, 1];
 			arrayAfterShift[15] = block[3, 2];
 			Block blokAfterShift = new Block(arrayAfterShift);
-
+			
 			return blokAfterShift;
+			
+			//for (int i = 0; i < 4; i++)
+			//	for (int j = 0; j < 4; j++)
+			//		arrayAfterShift[i * 4 + j] = block[i, (4 + i + j) % 4];
+
+			//return new Block(arrayAfterShift);			
         }
+
+		public static Block InverseShiftRows(Block block)
+		{
+			byte[] arrayAfterShift = new byte[16];
+
+			for (int i = 0; i < 4; i++)
+				for (int j = 0; j < 4; j++)
+					arrayAfterShift[i * 4 + j] = block[i, (4 - i + j) % 4];
+
+			return new Block(arrayAfterShift);
+		}
 
 		/// <summary>
 		/// receives the message to mix and the operation to perform - enc or dec
@@ -142,8 +181,16 @@ namespace AesProject
 				return multiplyValue;
 			else if (tableNumber == 2)
 				return Tables.RF_M2[(int)multiplyValue];
-			else
+			else if (tableNumber == 3)
 				return Tables.RF_M3[(int)multiplyValue];
+			else if (tableNumber == 9)
+				return Tables.RF_M9[(int)multiplyValue];
+			else if (tableNumber == 11)
+				return Tables.RF_M11[(int)multiplyValue];
+			else if (tableNumber == 13)
+				return Tables.RF_M13[(int)multiplyValue];
+			else if (tableNumber == 14)
+				return Tables.RF_M14[(int)multiplyValue];
 
 			throw new Exception("Invalid value for multiplication");
 		}
