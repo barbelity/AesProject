@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace AesProject
 {
-    class FileOperation
+    static class FileOperation
     {
-		public List<Block> ReadFromFile(string pathFile)
+		public static List<Block> ReadFromFile(string pathFile)
 		{
 			byte[] array = File.ReadAllBytes(pathFile);
 			List<Block> listToCrpt = doListByteArray(array);
@@ -35,10 +35,39 @@ namespace AesProject
 			return listToCrpt;
 		}
 
-		public static void WriteToFile(List<byte[]> listAfterCrpt)
+		public static void WriteToFile(List<Block> writeData, string filePath)
 		{
-
-			throw new NotImplementedException();
+			if (File.Exists(filePath))
+				File.Delete(filePath);
+			//using (FileStream fs = File.Create(filePath)) ;
+			string newPath = Directory.GetCurrentDirectory() + "/" + filePath;
+			using(File.Create(newPath));
+			
+			/*
+			{
+				byte[] allData = new byte[writeData.Count() * 16];
+				foreach (Block block in writeData)
+					allData.Concat(block.toByteArray());
+				fs.Write(allData, 0, allData.Length);
+			}*/
+			using (var fileStream = new FileStream(newPath, FileMode.Append, FileAccess.Write, FileShare.None))
+			using (var bw = new BinaryWriter(fileStream))
+			{
+				foreach (Block block in writeData)
+					bw.Write(block.toByteArray());
+			}
+			/*
+			byte[] allData = new byte[writeData.Count() * 16];
+			int counter = 0;
+			foreach (Block block in writeData)
+			{
+				allData.Concat(block.toByteArray())
+				counter++;
+			}
+				//allData.(block.toByteArray());
+			File.WriteAllBytes(filePath, allData);
+			//File.
+			 * */
 		}
 
     }

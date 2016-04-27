@@ -27,7 +27,12 @@ namespace AesProject
 
 		public static Block BreakAes1(Block message, Block cypher)
 		{
-			return AddRoundKey(MixColumns(ShiftRows(SubBytes(message)), true), cypher);
+			//return AddRoundKey(MixColumns(ShiftRows(SubBytes(message)), true), cypher);
+			Block res = SubBytes(message);
+			res = ShiftRows(res);
+			res = MixColumns(res, true);
+			res = AddRoundKey(res, cypher);
+			return res;
 		}
 
 		public static Block EncryptAes3(Block message, Block key1, Block key2, Block key3)

@@ -72,5 +72,14 @@ namespace AesProject
 		}
 
 		#endregion
+
+		public byte[] toByteArray()
+		{
+			byte[] res = new byte[16];
+			for (int i = 0; i < 4; i++)
+				for (int j = 0; j < 4; j++)
+					res[i * 4 + j] = this._data[i, j];
+			return res;
+		}
 	}
 }
