@@ -32,6 +32,19 @@ namespace AesProject
 			Buffer.BlockCopy(data, 0, _data, 0, 16);
 		}
 
+		public Block(byte[] data, bool fromFile)
+		{
+			if (data.Length != 16)
+			{
+				throw new Exception("data length given is not supported");
+			}
+
+			this._data = new byte[4, 4];
+			for (int i = 0; i < 4; i++)
+				for (int j = 0; j < 4; j++)
+					this._data[i, j] = data[i + j * 4];
+		}
+
 		#endregion
 
 		#region operators
@@ -78,7 +91,7 @@ namespace AesProject
 			byte[] res = new byte[16];
 			for (int i = 0; i < 4; i++)
 				for (int j = 0; j < 4; j++)
-					res[i * 4 + j] = this._data[i, j];
+					res[i + j * 4] = this._data[i, j];
 			return res;
 		}
 	}

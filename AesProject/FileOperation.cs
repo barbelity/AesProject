@@ -26,7 +26,7 @@ namespace AesProject
 			{
 
 				byte[] array16 = new List<byte>(array).GetRange(i, 16).ToArray();
-				Block block16 = new Block(array16);
+				Block block16 = new Block(array16, true);
 				listToCrpt.Add(block16);
 				i = j;
 				j = j + 16;
