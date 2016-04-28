@@ -8,21 +8,34 @@ namespace AesProject
 {
     public static class Aes
 	{
-		public static Block EncryptAes1(Block message, Block key)
+		public static List<Block> EncryptAes1(List<Block> message, Block key)
 		{
-			Block encMessage = SubBytes(message);
-			encMessage = ShiftRows(encMessage);
-			encMessage = MixColumns(encMessage, true);
-			encMessage = AddRoundKey(encMessage, key);
+			List<Block> res = new List<Block>();
+			for (int i = 0; i < message.Count; i++)
+			{
+				Block encMessage = SubBytes(message[i]);
+				encMessage = ShiftRows(encMessage);
+				encMessage = MixColumns(encMessage, true);
+				encMessage = AddRoundKey(encMessage, key);
+				res.Add(encMessage);
+			}
 
-			return encMessage;
+			return res;
 		}
 
-		public static Block DecryptAes1(Block encMessage, Block key)
+		public static List<Block> DecryptAes1(List<Block> encMessage, Block key)
 		{
-			Block message = new Block();
-			
-			return message;
+			List<Block> res = new List<Block>();
+			for (int i = 0; i < encMessage.Count; i++)
+			{
+				Block decMessage = AddRoundKey(encMessage[i], key);
+				decMessage = MixColumns(decMessage, false);
+				decMessage = InverseShiftRows(decMessage);
+				decMessage = inverseSubBytes(decMessage);
+				res.Add(decMessage);
+			}
+
+			return res;
 		}
 
 		public static Block BreakAes1(Block message, Block cypher)
@@ -35,15 +48,48 @@ namespace AesProject
 			return res;
 		}
 
-		public static Block EncryptAes3(Block message, Block key1, Block key2, Block key3)
+		private static List<Block> encrypyAes1Star(List<Block> message, Block key)
 		{
-			Block tempMsg = new Block();
+			List<Block> res = new List<Block>();
+			for (int i = 0; i < message.Count; i++)
+			{
+				Block encMessage = ShiftRows(message[i]);
+				encMessage = AddRoundKey(encMessage, key);
+				res.Add(encMessage);
+			}
 
-			tempMsg = AddRoundKey(MixColumns(ShiftRows(SubBytes(message)), true), key1);
-			tempMsg = AddRoundKey(MixColumns(ShiftRows(SubBytes(message)), true), key2);
-			tempMsg = AddRoundKey(MixColumns(ShiftRows(SubBytes(message)), true), key3);
-			
-			return tempMsg;
+			return res;
+		}
+
+		public static List<Block> decryptAes1Star(List<Block> encMessage, Block key)
+		{
+			List<Block> res = new List<Block>();
+			for (int i = 0; i < encMessage.Count; i++)
+			{
+				Block decMessage = AddRoundKey(encMessage[i], key);
+				decMessage = InverseShiftRows(decMessage);
+				res.Add(decMessage);
+			}
+
+			return res;
+		}
+
+		public static List<Block> EncryptAes3(List<Block> message, List<Block> keys)
+		{
+			List<Block> res = encrypyAes1Star(message, keys[0]);
+			res = encrypyAes1Star(res, keys[1]);
+			res = encrypyAes1Star(res, keys[2]);
+
+			return res;
+		}
+
+		public static List<Block> DecryptAes3(List<Block> message, List<Block> keys)
+		{
+			List<Block> res = decryptAes1Star(message, keys[2]);
+			res = decryptAes1Star(res, keys[1]);
+			res = decryptAes1Star(res, keys[0]);
+
+			return res;
 		}
 
         public static Block SubBytes(Block block)

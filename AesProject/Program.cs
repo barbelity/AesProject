@@ -27,7 +27,6 @@ namespace AesProject
 				}
 			}
 
-			
 			string command = cliArguments["operation"];
 			string useAlgorithm = cliArguments.ContainsKey("-a") ? cliArguments["-a"] : cliArguments["–a"];
 			string outputPath = cliArguments.ContainsKey("-o") ? cliArguments["-o"] : cliArguments["–o"];
@@ -40,10 +39,20 @@ namespace AesProject
 
 				List<Block> breakMessage = FileOperation.ReadFromFile(messagePath);
 				List<Block> breakCypher = FileOperation.ReadFromFile(cypherPath);
-
 				List<Block> breakKey = new List<Block>();
-				breakKey.Add(Aes.BreakAes1(breakMessage[0], breakCypher[0]));
-				FileOperation.WriteToFile(breakKey, outputPath);
+
+				if (useAlgorithm.Equals("AES1"))
+				{
+					//perform AES1
+					breakKey.Add(Aes.BreakAes1(breakMessage[0], breakCypher[0]));
+					FileOperation.WriteToFile(breakKey, outputPath);
+				}
+				else
+				{
+					//perform AES3
+
+				}
+				
 			}
 			else
 			{
@@ -51,15 +60,41 @@ namespace AesProject
 				string keyPath = cliArguments.ContainsKey("-k") ? cliArguments["-k"] : cliArguments["–k"];
 				string inputPath = cliArguments.ContainsKey("-i") ? cliArguments["-i"] : cliArguments["–i"];
 
-				List<Block> encKey = FileOperation.ReadFromFile(keyPath);
+				List<Block> inputData = FileOperation.ReadFromFile(inputPath);
+				List<Block> inputKey = FileOperation.ReadFromFile(keyPath);
+				List<Block> outputData = new List<Block>();
 
 				if (command.Equals("-e") || command.Equals("–e"))
 				{
-
+					//perform Encrypt
+					if (useAlgorithm.Equals("AES1"))
+					{
+						//perform AES1
+						outputData = (Aes.EncryptAes1(inputData, inputKey[0]));
+						FileOperation.WriteToFile(outputData, outputPath);
+					}
+					else
+					{
+						//perform AES3
+						outputData = (Aes.EncryptAes3(inputData, inputKey));
+						FileOperation.WriteToFile(outputData, outputPath);
+					}
 				}
 				else if (command.Equals("-d") || command.Equals("–d"))
 				{
-					//perform decrypt
+					//perform Decrypt
+					if (useAlgorithm.Equals("AES1"))
+					{
+						//perform AES1
+						outputData = Aes.DecryptAes1(inputData, inputKey[0]);
+						FileOperation.WriteToFile(outputData, outputPath);
+					}
+					else
+					{
+						//perform AES3
+						outputData = Aes.DecryptAes3(inputData, inputKey);
+						FileOperation.WriteToFile(outputData, outputPath);
+					}
 				}
 			}
 			
