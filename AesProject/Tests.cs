@@ -91,6 +91,45 @@ namespace AesProject
 			Block checking = Aes.EncryptAes1(block, block5);
 			bool resss = (key == checking);
  * */
+			/*
+------break AES1------
+***short***
+–a AES1 –b –m outputs\AES1_shotMessage\message –c outputs\AES1_shotMessage\cypher_AES1 –o outputs\AES1_shotMessage\keyFound
+***long***
+–a AES1 –b –m outputs\AES1_longMessage\message –c outputs\AES1_longMessage\cypher_AES1 –o outputs\AES1_longMessage\keyFound
+
+------encrypt AES1------
+***short***
+–a AES1 –e –i outputs\AES1_shotMessage\message –k outputs\AES1_shotMessage\key_AES1 –o outputs\AES1_shotMessage\encryptedMessage
+***long***
+–a AES1 –e –i outputs\AES1_longMessage\message –k outputs\AES1_longMessage\key_AES1 –o outputs\AES1_longMessage\encryptedMessage
+
+------decrypt AES1------
+***short***
+–a AES1 –d –i outputs\AES1_shotMessage\cypher_AES1 –k outputs\AES1_shotMessage\key_AES1 –o outputs\AES1_shotMessage\plainMessage
+***long***
+–a AES1 –d –i outputs\AES1_longMessage\cypher_AES1 –k outputs\AES1_longMessage\key_AES1 –o outputs\AES1_longMessage\plainMessage
+
+
+
+------break AES3------
+***short***
+q
+***long***
+–a AES3 –b –m outputs\AES_3_longMessage\message –c outputs\AES_3_longMessage\cypher_AES_3 –o outputs\AES_3_longMessage\keyFound
+------encrypt AES3------
+***short***
+–a AES3 –e –i outputs\AES_3_shortMessage\message –k outputs\AES_3_shortMessage\key_AES_3 –o outputs\AES_3_shortMessage\encryptedMessage
+***long***
+–a AES3 –e –i outputs\AES_3_longMessage\message –k outputs\AES_3_longMessage\key_AES_3 –o outputs\AES_3_longMessage\encryptedMessage
+
+------decrypt AES3------
+***short***
+–a AES3 –d –i outputs\AES_3_shortMessage\cypher_AES_3 –k outputs\AES_3_shortMessage\key_AES_3 –o outputs\AES_3_shortMessage\plainMessage
+***long***
+–a AES3 –d –i outputs\AES_3_longMessage\cypher_AES_3 –k outputs\AES_3_longMessage\key_AES_3 –o outputs\AES_3_longMessage\plainMessage
+			 * */
+
 
 		}
 	}
