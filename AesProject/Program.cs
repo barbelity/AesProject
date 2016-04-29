@@ -50,7 +50,14 @@ namespace AesProject
 				else
 				{
 					//perform AES3
+					breakKey = Aes.BreakAes3(breakMessage, breakCypher[0]);
+					FileOperation.WriteToFile(breakKey, outputPath);
 
+					List<Block> inputKey = FileOperation.ReadFromFile(outputPath);
+					List<Block> encMessageTest = Aes.EncryptAes3(breakMessage, inputKey);
+					FileOperation.WriteToFile(encMessageTest, "outputs\\AES_3_longMessage\\encMessageTest");
+					
+					
 				}
 				
 			}

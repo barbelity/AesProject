@@ -48,7 +48,7 @@ namespace AesProject
 			return res;
 		}
 
-		private static List<Block> encrypyAes1Star(List<Block> message, Block key)
+		private static List<Block> encryptAes1Star(List<Block> message, Block key)
 		{
 			List<Block> res = new List<Block>();
 			for (int i = 0; i < message.Count; i++)
@@ -76,9 +76,9 @@ namespace AesProject
 
 		public static List<Block> EncryptAes3(List<Block> message, List<Block> keys)
 		{
-			List<Block> res = encrypyAes1Star(message, keys[0]);
-			res = encrypyAes1Star(res, keys[1]);
-			res = encrypyAes1Star(res, keys[2]);
+			List<Block> res = encryptAes1Star(message, keys[0]);
+			res = encryptAes1Star(res, keys[1]);
+			res = encryptAes1Star(res, keys[2]);
 
 			return res;
 		}
@@ -88,6 +88,29 @@ namespace AesProject
 			List<Block> res = decryptAes1Star(message, keys[2]);
 			res = decryptAes1Star(res, keys[1]);
 			res = decryptAes1Star(res, keys[0]);
+
+			return res;
+		}
+
+		public static List<Block> BreakAes3(List<Block> message, Block cypher)
+		{
+			List<Block> res = new List<Block>();
+			Random rnd = new Random();
+			byte[] key0 = new byte[16];
+			byte[] key1 = new byte[16];
+
+			rnd.NextBytes(key0);
+			rnd.NextBytes(key1);
+			res.Add(new Block(key0));
+			res.Add(new Block(key1));
+
+			List<Block> encMessage = new List<Block>();
+			encMessage.Add(message[0]);
+			encMessage = encryptAes1Star(encMessage, res[0]);
+			encMessage = encryptAes1Star(encMessage, res[1]);
+
+			Block asd = ShiftRows(encMessage[0]);
+			res.Add(AddRoundKey(asd, cypher));
 
 			return res;
 		}
